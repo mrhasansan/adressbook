@@ -1,4 +1,7 @@
-const contacts = [
+const contactListElement = document.getElementById("contacts");
+const addContactFormElement = document.getElementById("addContactForm");
+
+let contactsData = [
   {
     id: 1,
     fullname: "Mrhasans",
@@ -18,43 +21,51 @@ const contacts = [
 ];
 
 const renderContact = () => {
-  for (let index = 0; index < contacts.length; index++) {
-    const contact = contacts[index];
-    const contactString = `${contact.fullname}  Birhday in ${contact.birthday}
-    Email: ${contact.email}
-    Phone: ${contact.phone}`;
-    console.log(contactString);
-  }
+  const contactString = contactsData
+    .map((contact) => {
+      return `<li>
+      <h2>name: ${contact.fullname} </h2>
+      <p>Birhday in ${contact.birthday}</p>
+      <p>Email: ${contact.email}</p>
+      <p> Phone: ${contact.phone}</p>
+    </li>`;
+    })
+    .join("");
+
+  contactListElement.innerHTML = contactString;
 };
 
-const addContact = () => {
+const addContact = (event) => {
+  event.preventDefault();
+  const formData = new FormData(addContactFormElement);
+
+  const nextId = contactsData[contactsData.length - 1] + 1;
+
   const newContact = {
-    id: 3,
-    fullname: "halim",
-    email: "limhas@gmail.com",
-    phone: "08706764358",
-    address: "Adikarso, Kebumen",
-    birthday: new Date("2000-01-10"),
+    id: nextId,
+    fullname: formData.get("fname"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    address: formData.get("address"),
+    birthday: formData.get("birthday"),
   };
-  const result = contacts.push(newContact);
+
+  contactsData = [...contactsData, newContact];
+  renderContact();
 };
-const searchContacts = (keyword) => {
-  const searchedContact = contacts.filter((contact) => {
-    return contact.fullname.toLowerCase().includes(keyword.toLowerCase());
-  });
-  console.log(searchedContact);
-};
+// const searchContacts = (keyword) => {
+//   const searchedContact = contacts.filter((contact) => {
+//     return contact.fullname.toLowerCase().includes(keyword.toLowerCase());
+//   });
+//   console.log(searchedContact);
+// };
 
-const getContactByID = (id) => {
-  const contact = contacts.find((contact) => {
-    return contact.id === id;
-  });
-  console.log(contact);
-};
+// const getContactByID = (id) => {
+//   const contact = contacts.find((contact) => {
+//     return contact.id === id;
+//   });
+//   console.log(contact);
+// };
 
-console.log(contacts);
-addContact();
-
-searchContacts("hal");
-
-getContactByID(2);
+addContactFormElement.addEventListener("submit", addContact);
+renderContact();
