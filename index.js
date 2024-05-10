@@ -1,34 +1,31 @@
 const contactListElement = document.getElementById("contacts");
 const addContactFormElement = document.getElementById("addContactForm");
-
-let contactsData = [
-  {
-    id: 1,
-    fullname: "Mrhasans",
-    email: "maruf@gmail.com",
-    phone: "08728285278",
-    address: "Grogol, West Jakarta,",
-    birthday: new Date("1997-07-21"),
-  },
-  {
-    id: 2,
-    fullname: "Mustofa",
-    email: "musmus@gmail.com",
-    phone: "08906764808",
-    address: "Karangsari, Kebumen",
-    birthday: new Date("1998-05-12"),
-  },
-];
+const seachKeywordForElement = document.getElementById("keyword");
 
 const renderContact = () => {
-  const contactString = contactsData
+  const searchParams = new URLSearchParams(window.location.search);
+  const keyword = searchParams.get("key");
+  seachKeywordForElement.value = keyword;
+
+  const contactsToDisplay = keyword ? searchContacts(loadContacts(), keyword) : loadContacts();
+
+  const contactString = contactsToDisplay
     .map((contact) => {
-      return `<li>
-      <h2>name: ${contact.fullname} </h2>
-      <p>Birhday in ${contact.birthday}</p>
-      <p>Email: ${contact.email}</p>
-      <p> Phone: ${contact.phone}</p>
-    </li>`;
+      return `
+      <table class="min-w-full divide-y divide-gray-200">
+          <tbody class="bg-white divide-y divide-gray-200">
+            <!-- Sample contact entry -->
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${contact.fullname}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${contact.phone}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${contact.address}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">
+              <a href="/contact/?id=${contact.id} ">detail</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    `;
     })
     .join("");
 
@@ -38,9 +35,9 @@ const renderContact = () => {
 const addContact = (event) => {
   event.preventDefault();
   const formData = new FormData(addContactFormElement);
+  const dataContacts = loadContacts();
 
-  const nextId = contactsData[contactsData.length - 1] + 1;
-
+  const nextId = dataContacts[dataContacts.length - 1].id + 1;
   const newContact = {
     id: nextId,
     fullname: formData.get("fname"),
@@ -50,22 +47,22 @@ const addContact = (event) => {
     birthday: formData.get("birthday"),
   };
 
-  contactsData = [...contactsData, newContact];
+  const newDataContacts = [...dataContacts, newContact];
+  saveContacts(newDataContacts);
   renderContact();
 };
-// const searchContacts = (keyword) => {
-//   const searchedContact = contacts.filter((contact) => {
-//     return contact.fullname.toLowerCase().includes(keyword.toLowerCase());
-//   });
-//   console.log(searchedContact);
-// };
 
-// const getContactByID = (id) => {
-//   const contact = contacts.find((contact) => {
-//     return contact.id === id;
-//   });
-//   console.log(contact);
-// };
+function toggleForm() {
+  const form = document.getElementById("addContactForm");
+  form.classList.toggle("hidden");
+}
+
+const searchContacts = (contacts, keyword) => {
+  const searchedContact = contacts.filter((contact) => {
+    return contact.fullname.toLowerCase().includes(keyword.toLowerCase());
+  });
+  return searchedContact;
+};
 
 addContactFormElement.addEventListener("submit", addContact);
 renderContact();
