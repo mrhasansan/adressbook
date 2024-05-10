@@ -6,14 +6,14 @@
     <title>Adress Book</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100 flex flex-col min-h-screen">
     <header class="bg-gray-800 text-white py-4 text-center">
-      <h1>
-        <a href="/">Address Book </a>
+      <h1 class="text-3xl font-bold">
+        <a href="/" class="hover:text-gray-300">Address Book</a>
       </h1>
     </header>
 
-    <main class="container mx-auto py-8">
+    <main class="container mx-auto py-8 flex-1">
       <div class="flex justify-between items-center mb-6">
         <button onclick="toggleForm()" class="bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-gray-300" id="addContactBtn">Add Contact</button>
         <section class="flex items-center">
@@ -48,22 +48,24 @@
         <button type="submit" value="submit" class="bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-gray-300">Save</button>
       </form>
       <section class="bg-white shadow-md rounded-md p-6">
-        <h1 class="text-2xl font-bold mb-4">Full Contact</h1>
-        <table class="w-full table-fixed">
+        <h1 class="text-2xl font-bold mb-4 text-center">List Contacts</h1>
+        <table class="w-full">
           <thead class="bg-gray-50">
             <tr>
-              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Full Name</th>
-              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Phone number</th>
-              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Address</th>
-              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Details</th>
+              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500">Full Name</th>
+              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500">Phone number</th>
+              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500">Address</th>
+              <th class="w-1/4 px-6 py-3 text-left text-sm font-medium text-gray-500">Details</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200"></tbody>
+          <tbody>
+            <!-- List contact table-->
+          </tbody>
         </table>
         <ul id="contacts" class="mt-4"></ul>
       </section>
     </main>
-    <footer class="bg-gray-800 text-white py-4 text-center">
+    <footer class="bg-gray-800 text-white py-4 text-center mt-auto">
       <p class="text-sm">© 2024 Hasansan. All rights reserved.</p>
     </footer>
     <script src="/storage.js"></script>

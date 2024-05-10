@@ -50,6 +50,9 @@ const addContact = (event) => {
   const newDataContacts = [...dataContacts, newContact];
   saveContacts(newDataContacts);
   renderContact();
+
+  alert("Contact added successfully!");
+  window.location.replace("/");
 };
 
 function toggleForm() {
